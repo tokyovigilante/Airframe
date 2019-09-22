@@ -10,7 +10,7 @@ func xdgSurfaceHandleConfigure(data: UnsafeMutableRawPointer?,
     xdg_surface_ack_configure(xdg_surface, serial)
 }
 
- var xdgSurfaceListener = xdg_surface_listener(
+var xdgSurfaceListener = xdg_surface_listener(
     configure: xdgSurfaceHandleConfigure
 )
 
@@ -40,7 +40,7 @@ func xdgToplevelHandleClose (data: UnsafeMutableRawPointer?,
     window.closeCallback?(window)
 }
 
- var xdgToplevelListener = xdg_toplevel_listener(
+var xdgToplevelListener = xdg_toplevel_listener(
     configure: xdgToplevelHandleConfigure,
     close: xdgToplevelHandleClose
 )

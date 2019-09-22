@@ -97,7 +97,7 @@ func pointerOnAxis (data: UnsafeMutableRawPointer?,
         x: window._pointer.x,
         y: window._pointer.y,
         axis: axisDirection,
-        value: wl_fixed_to_double(value),
+        value: wl_fixed_to_int(value) > 0 ? -1 : 1,//,wl_fixed_to_double(value),
         modifiers: []
     )
     Log.debug("axis: \(event)")
