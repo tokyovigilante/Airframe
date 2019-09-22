@@ -1,0 +1,5 @@
+module CXKBCommon {
+    umbrella header "cxkbcommon.h"
+    export *
+    link "xkbcommon"
+}
