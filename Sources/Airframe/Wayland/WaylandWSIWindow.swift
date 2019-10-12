@@ -152,9 +152,11 @@ public class WaylandWSIWindow: AirframeWindow {
 
         if xdg_surface_add_listener(_xdg_surface, &xdgSurfaceListener, nil) != 0 {
             Log.error("xdg_surface_add_listener failed")
+            return nil
         }
         if xdg_toplevel_add_listener(_xdg_toplevel, &xdgToplevelListener, unsafeSelf) != 0 {
             Log.error("xdg_toplevel_add_listener failed")
+            return nil
         }
         if let title = title {
             xdg_toplevel_set_title(_xdg_toplevel, title.cString(using: .utf8))
@@ -301,54 +303,54 @@ private func handleGlobal(data: UnsafeMutableRawPointer?,
     guard let interface = interface, let data = data else {
         return
     }
-    var targetVersion: UInt32
+    var minimumVersion: UInt32
     let window = Unmanaged<WaylandWSIWindow>.fromOpaque(data)
             .takeUnretainedValue()
     let interfaceName = String(cString: interface)
-    Log.debug("\(name): \(interfaceName) \(version)")
+    Log.debug("\(name): \(interfaceName) v\(version)")
     if interfaceName == WaylandProtocol.seat.rawValue {
         guard let seatInterface = shim_get_interface(interface) else {
             Log.error("Failed to get interface pointer for \(interfaceName)")
             return
         }
-        targetVersion = 6
-        window._seat = OpaquePointer(wl_registry_bind(registry, name, seatInterface, targetVersion))
+        minimumVersion = 5
+        window._seat = OpaquePointer(wl_registry_bind(registry, name, seatInterface, max(minimumVersion, version)))
         wl_seat_add_listener(window._seat, &seatListener, data)
     } else if interfaceName == WaylandProtocol.compositor.rawValue {
         guard let compositorInterface = shim_get_interface(interface) else {
             Log.error("Failed to get interface pointer for \(interfaceName)")
             return
         }
-        targetVersion = 4
-        window._compositor = OpaquePointer(wl_registry_bind(registry, name, compositorInterface, targetVersion))
+        minimumVersion = 4
+        window._compositor = OpaquePointer(wl_registry_bind(registry, name, compositorInterface, max(minimumVersion, version)))
     } else if interfaceName == WaylandProtocol.subcompositor.rawValue {
         guard let subcompositorInterface = shim_get_interface(interface) else {
             Log.error("Failed to get interface pointer for \(interfaceName)")
             return
         }
-        targetVersion = 1
-        window._subcompositor = OpaquePointer(wl_registry_bind(registry, name, subcompositorInterface, targetVersion))
+        minimumVersion = 1
+        window._subcompositor = OpaquePointer(wl_registry_bind(registry, name, subcompositorInterface, max(minimumVersion, version)))
     } else if interfaceName == WaylandProtocol.xdg_wm_base.rawValue {
         guard let xdgWmBaseInterface = shim_get_interface(interface) else  {
             Log.error("Failed to get interface pointer for \(interfaceName)")
             return
         }
-        targetVersion = 1
-        window._xdg_wm_base = OpaquePointer(wl_registry_bind(registry, name, xdgWmBaseInterface, targetVersion))
+        minimumVersion = 1
+        window._xdg_wm_base = OpaquePointer(wl_registry_bind(registry, name, xdgWmBaseInterface, max(minimumVersion, version)))
     } else if interfaceName == WaylandProtocol.output.rawValue {
         guard let outputInterface = shim_get_interface(interface) else  {
             Log.error("Failed to get interface pointer for \(interfaceName)")
             return
         }
-        targetVersion = 3
-        let output = OpaquePointer(wl_registry_bind(registry, name, outputInterface, targetVersion))
+        minimumVersion = 2
+        let output = OpaquePointer(wl_registry_bind(registry, name, outputInterface, max(minimumVersion, version)))
         wl_output_add_listener(output, &outputListener, data)
         window._outputs[name] = output
         window._outputMetrics[name] = OutputMetrics()
     } else {
         return
     }
-    Log.verbose("Bound \(name): \(interfaceName) v\(targetVersion) (supported v\(version))")
+    Log.verbose("Bound \(name): \(interfaceName) v\(max(minimumVersion, version)) (supported v\(version), minimum v\(minimumVersion)")
 }
 
 private func handleGlobalRemove (data: UnsafeMutableRawPointer?,
