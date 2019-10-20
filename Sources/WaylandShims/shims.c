@@ -3,6 +3,7 @@
 
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
+#include <EGL/eglmesaext.h>
 #include <errno.h>
 #include <glib-2.0/glib.h>
 #include <string.h>
