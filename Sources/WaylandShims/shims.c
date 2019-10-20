@@ -154,13 +154,9 @@ void *setup_wayland_event_source (void *display) {
     return (void *)wl_source;
 }
 
-
-
-
-
 static void
-wl_src_finalize (GSource *base)
-{
+wl_src_finalize (GSource *base) {
+    // no-op
 }
 
 #endif // __linux__
