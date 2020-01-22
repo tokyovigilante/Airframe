@@ -2,6 +2,7 @@
 
 import CWaylandClient
 import CWaylandEGL // workaround SR-9589
+import Harness
 import LoggerAPI
 
 func pointerOnEnter (data: UnsafeMutableRawPointer?, pointer: OpaquePointer?,

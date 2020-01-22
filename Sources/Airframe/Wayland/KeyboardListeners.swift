@@ -5,6 +5,7 @@ import CWaylandEGL // workaround SR-9589
 import CXKBCommon
 import Glibc
 import CGLib
+import Harness
 import LoggerAPI
 
 func keyboardOnKeymap(data: UnsafeMutableRawPointer?,
