@@ -3,6 +3,7 @@
 import CWaylandClient
 import CWaylandEGL // workaround SR-9589
 import CXKBCommon
+import Foundation
 import LoggerAPI
 
 var seatListener = wl_seat_listener(

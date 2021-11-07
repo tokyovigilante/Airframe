@@ -164,7 +164,7 @@ public class WaylandWSIWindow: AirframeWindow {
         if let appID = appID {
             xdg_toplevel_set_app_id(_xdg_wm_base, appID.cString(using: .utf8))
         }
-        guard let eglDisplay = eglGetDisplay(display) else {
+        guard let eglDisplay = eglGetDisplay(UnsafeMutableRawPointer(display)) else {
             Log.error("failed to get EGL display")
             return nil
         }
