@@ -96,16 +96,21 @@ func pointerOnAxis (data: UnsafeMutableRawPointer?,
         x: window._pointer.x,
         y: window._pointer.y,
         axis: axisDirection,
-        value: wl_fixed_to_int(value) > 0 ? -1 : 1,//,wl_fixed_to_double(value),
+        value: wl_fixed_to_double(value),
         modifiers: []
     )
     Log.debug("axis: \(event)")
     window.pointerAxisCallback?(window, event)
 }
 func pointerOnFrame (data: UnsafeMutableRawPointer?, pointer: OpaquePointer?) {
-    /* @FIXME: buffer pointer events and handle them in frame. That's the
-     * recommended usage of this interface.
-     */
+    guard let data = data else {
+        return
+    }
+    let window = Unmanaged<WaylandWSIWindow>.fromOpaque(data)
+            .takeUnretainedValue()
+
+    Log.debug("frame")
+    window.pointerFrameCallback?(window)
 }
 
 func pointerOnAxisSource (data: UnsafeMutableRawPointer?, pointer: OpaquePointer?, axisSource: UInt32) {
