@@ -55,11 +55,9 @@ func pointerOnButton (data: UnsafeMutableRawPointer?,
     var button = button
     if button >= UInt32(BTN_MOUSE) {
         button = button - UInt32(BTN_MOUSE) + 1
-    }
-    else {
+    } else {
         button = 0
     }
-
     guard let data = data else {
         return
     }
