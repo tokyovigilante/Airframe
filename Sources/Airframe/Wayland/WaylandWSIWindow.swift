@@ -369,7 +369,9 @@ fileprivate var outputListener = wl_output_listener(
     geometry: outputHandleGeometry,
     mode: outputHandleMode,
     done: outputHandleDone,
-    scale: outputHandleScale
+    scale: outputHandleScale,
+    name: nil,
+    description: nil
 )
 
 fileprivate func outputHandleGeometry (data: UnsafeMutableRawPointer?,

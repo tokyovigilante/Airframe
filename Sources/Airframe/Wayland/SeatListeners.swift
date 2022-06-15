@@ -1,5 +1,6 @@
 #if os(Linux)
 
+import Foundation
 import CWaylandClient
 import CWaylandEGL // workaround SR-9589
 import CXKBCommon
@@ -32,7 +33,7 @@ func seatHandleCapabilities (data: UnsafeMutableRawPointer?,
         window._xkb.context = context
         window._xkb.composeTable =
                 xkb_compose_table_new_from_locale(window._xkb.context,
-                        setlocale(LC_CTYPE, nil), XKB_COMPOSE_COMPILE_NO_FLAGS)
+                setlocale(LC_CTYPE, nil), XKB_COMPOSE_COMPILE_NO_FLAGS)
         if (window._xkb.composeTable != nil) {
             window._xkb.composeState = xkb_compose_state_new(
                     window._xkb.composeTable, XKB_COMPOSE_STATE_NO_FLAGS)
