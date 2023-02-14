@@ -125,6 +125,10 @@ func pointerOnAxisDiscrete (data: UnsafeMutableRawPointer?, pointer: OpaquePoint
 
 }
 
+func pointerOnAxisV120 (data: UnsafeMutableRawPointer?, pointer: OpaquePointer?,axis: UInt32, v120: Int32) {
+
+}
+
 var pointerListener = wl_pointer_listener(
     enter: pointerOnEnter,
     leave: pointerOnLeave,
@@ -134,7 +138,8 @@ var pointerListener = wl_pointer_listener(
     frame: pointerOnFrame,
     axis_source: pointerOnAxisSource,
     axis_stop: pointerOnAxisStop,
-    axis_discrete: pointerOnAxisDiscrete
+    axis_discrete: pointerOnAxisDiscrete,
+    axis_value120: pointerOnAxisV120
 )
 
 extension AxisDirection {

@@ -40,9 +40,19 @@ func xdgToplevelHandleClose (data: UnsafeMutableRawPointer?,
     window.closeCallback?(window)
 }
 
+func xdgTopLevelHandleConfigureBounds (data: UnsafeMutableRawPointer?, xdg_toplevel: OpaquePointer?, width: Int32, height: Int32) {
+    Log.debug("Window size \(width)x\(height)")
+}
+
+func xdgTopLevelHandleWMCapabilities (data: UnsafeMutableRawPointer?, xdg_toplevel: OpaquePointer?, capabilities: UnsafeMutablePointer<wl_array>?) {
+    Log.debug("Got WM capabilities")
+}
+
 var xdgToplevelListener = xdg_toplevel_listener(
     configure: xdgToplevelHandleConfigure,
-    close: xdgToplevelHandleClose
+    close: xdgToplevelHandleClose,
+    configure_bounds: xdgTopLevelHandleConfigureBounds,
+    wm_capabilities: xdgTopLevelHandleWMCapabilities
 )
 
 #endif
